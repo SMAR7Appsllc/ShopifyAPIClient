@@ -211,7 +211,7 @@ class ShopifyClient
         }
         // Looks like it's app proxy request
         $appProxy = TRUE;
-        
+
         // hmac exists only in normal requests. And calculated signature should be compared to it
         if (!empty($query['hmac'])) {
             $signatureToCheck = $query['hmac'];
@@ -219,7 +219,7 @@ class ShopifyClient
             // No, it's not an app proxy request
             $appProxy = FALSE;
         }
-        
+
         $map = array();
 
         ksort($query);
@@ -228,7 +228,7 @@ class ShopifyClient
         }
 
         $string = ($appProxy) ? implode('', $map) : implode('&', $map);
-        
+
         $calculatedSignature = hash_hmac('sha256', $string, $this->secret);
         return $signatureToCheck === $calculatedSignature;
     }
@@ -280,7 +280,7 @@ class ShopifyClient
         curl_setopt($ch, CURLOPT_SSLVERSION, 6);
         curl_setopt($ch, CURLOPT_USERAGENT, 'ohShopify-php-api-client');
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 120);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 300);
 
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         if (!empty($request_headers))
